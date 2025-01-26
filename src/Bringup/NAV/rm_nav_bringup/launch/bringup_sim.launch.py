@@ -127,12 +127,44 @@ def generate_launch_description():
         ]
     )
 
+    # 默认地面分割算法
     bringup_linefit_ground_segmentation_node = Node(
         package='linefit_ground_segmentation_ros',
         executable='ground_segmentation_node',
         output='screen',
         parameters=[segmentation_params]
     )
+
+    # Patchwork++ 地面分割算法
+    # patchworkpp_node = Node(
+    #     package="patchworkpp",  # 包名
+    #     executable="patchworkpp_node",  # 可执行文件
+    #     name="patchworkpp_node",  # 节点名称
+    #     output="screen",  # 输出到屏幕
+    #     remappings=[
+    #         ("pointcloud_topic", '/livox/lidar/pointcloud'),  # 重映射点云话题
+    #     ],
+    #     parameters=[
+    #         {
+    #             # ROS 节点配置
+    #             "base_frame": 'map',  # 基础坐标系
+    #             "use_sim_time": use_sim_time,  # 是否使用仿真时间
+    #             # Patchwork++ 配置
+    #             'sensor_height': 1.88,  # 传感器高度
+    #             'num_iter': 3,  # 使用 PCA 进行地面平面估计的迭代次数
+    #             'num_lpr': 20,  # 选择为最低点代表的最大点数
+    #             'num_min_pts': 0,  # 每个 patch 中估计为地面的最小点数
+    #             'th_seeds': 0.3,  # 初始种子选择中用于地面点的最低点代表的阈值
+    #             'th_dist': 0.125,  # 地面厚度的阈值
+    #             'th_seeds_v': 0.25,  # 初始种子选择中用于垂直结构点的最低点代表的阈值
+    #             'th_dist_v': 0.9,  # 垂直结构厚度的阈值
+    #             'max_range': 80.0,  # 地面估计区域的最大范围
+    #             'min_range': 1.0,  # 地面估计区域的最小范围
+    #             'uprightness_thr': 0.101,  # 地面似然估计（GLE）中使用的直立度阈值
+    #             'verbose': True  # 是否显示详细信息
+    #         }
+    #     ],
+    # )
 
     bringup_pointcloud_to_laserscan_node = Node(
         package='pointcloud_to_laserscan', executable='pointcloud_to_laserscan_node',
