@@ -15,8 +15,6 @@ def generate_launch_description():
     # Get the launch directory
     rm_nav_bringup_dir = get_package_share_directory('rm_nav_bringup')
     navigation2_launch_dir = os.path.join(get_package_share_directory('rm_navigation'), 'launch')
-    serial_driver_config = os.path.join(get_package_share_directory('rm_nav_bringup'), 'config', 'serial_driver.yaml')
-
 
     # Create the launch configuration variables
     world = LaunchConfiguration('world')
@@ -93,18 +91,6 @@ def generate_launch_description():
     ]
     ####################### Livox_ros_driver2 parameters end #########################
 
-    ####################### 串口通信 参数 start #########################
-    rm_serial_driver_nav_node = Node(
-        package='rm_serial_driver_nav',
-        executable='rm_serial_driver_nav_node',
-        namespace='',
-        output='screen',
-        emulate_tty=True,
-        parameters=[serial_driver_config],
-    )
-    ####################### 串口通信 参数 end #########################
-
-
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
         default_value='False',
@@ -128,7 +114,7 @@ def generate_launch_description():
     declare_mode_cmd = DeclareLaunchArgument(
         'mode',
         default_value='',
-        description='Choose mode: nav, mstartapping')
+        description='Choose mode: nav, mapping')
     
     declare_LIO_cmd = DeclareLaunchArgument(
         'lio',
@@ -380,6 +366,5 @@ def generate_launch_description():
     ld.add_action(bringup_fake_vel_transform_node)
     ld.add_action(start_mapping)
     ld.add_action(start_navigation2)
-    ld.add_action(rm_serial_driver_nav_node)
 
     return ld
