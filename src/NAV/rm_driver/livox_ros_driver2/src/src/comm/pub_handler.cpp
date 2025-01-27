@@ -453,8 +453,13 @@ void LidarPubHandler::ProcessCartesianHighPoint(RawPacket &pkt) {
     point.line = i % pkt.line_num;
     point.tag = raw[i].tag;
     point.offset_time = pkt.time_stamp + i * pkt.point_interval;
-    std::lock_guard<std::mutex> lock(mutex_);
-    points_clouds_.push_back(point);
+    
+    // 计算点的距离并过滤掉距离在0cm到40cm之间的点
+    float distance = sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+    if (distance >= 0.4) {
+      std::lock_guard<std::mutex> lock(mutex_);
+      points_clouds_.push_back(point);
+    }
   }
 }
 
@@ -485,8 +490,13 @@ void LidarPubHandler::ProcessCartesianLowPoint(RawPacket &pkt) {
     point.line = i % pkt.line_num;
     point.tag = raw[i].tag;
     point.offset_time = pkt.time_stamp + i * pkt.point_interval;
-    std::lock_guard<std::mutex> lock(mutex_);
-    points_clouds_.push_back(point);
+
+    // 计算点的距离并过滤掉距离在0cm到40cm之间的点
+    float distance = sqrt(point.x * point.x + point.y * point.y + point.z * point.z);
+    if (distance >= 0.4) {
+      std::lock_guard<std::mutex> lock(mutex_);
+      points_clouds_.push_back(point);
+    }
   }
 }
 
